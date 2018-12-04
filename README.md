@@ -58,6 +58,7 @@ ChannelAttribute 用来保存与channel相关联的信息，比如device_id、�
 
 @Override
 public Object postProcessAfterInitialization(Object bean, String beanName){
+
 	// 处理@NettyController
 	Boolean annoBool = bean.getClass().isAnnotationPresent(NettyController.class);
 	if (!annoBool) {
@@ -83,6 +84,7 @@ public Object postProcessAfterInitialization(Object bean, String beanName){
 
 @Override
 public void channelRead(ChannelHandlerContext ctx, Object msg){
+
 	String str = (String) msg;
 	BaseMessage bm = JSONObject.parseObject(str, BaseMessage.class);
 	String deviceId = bm.getDeviceId();
