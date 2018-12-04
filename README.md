@@ -25,7 +25,9 @@
 
 @Override
 public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
 	ChannelAttribute attr = ctx.channel().attr(channelAttr).get();
+	
 	// 每次请求都更新最后read时间
 	attr.setLasttime(System.currentTimeMillis());
 
