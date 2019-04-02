@@ -1,5 +1,6 @@
-微信公众号地址：
+微信公众号文章地址：
 https://mp.weixin.qq.com/s?__biz=MzU3Mjc2NzQ5Nw==&mid=2247483753&idx=1&sn=87513efa5ccbaa1113576cdef3da5ab0&scene=19#wechat_redirect
+
 
 
 如何优雅的处理Netty TCP私有报文
@@ -9,10 +10,15 @@ https://mp.weixin.qq.com/s?__biz=MzU3Mjc2NzQ5Nw==&mid=2247483753&idx=1&sn=87513e
 
 下面给大家介绍一个优雅的处理办法：
 用到的的技术栈：
+
 1.SpringBoot 2.0
+
 2.Netty4.1
+
 3.SpringCloud中的Feign组件
+
 4.spring线程池、java注解、反射
+
 
 具体思路：
 1.定义@NettyController和@InboundHandlerMapping(3)注解，在具体的业务处理类和方法上分别添加上面两个注解
