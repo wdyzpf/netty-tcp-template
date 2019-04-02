@@ -19,17 +19,19 @@ https://mp.weixin.qq.com/s?__biz=MzU3Mjc2NzQ5Nw==&mid=2247483753&idx=1&sn=87513e
 
 4.spring线程池、java注解、反射
 
-
 具体思路：
 1.定义@NettyController和@InboundHandlerMapping(3)注解，在具体的业务处理类和方法上分别添加上面两个注解
+
 2.通过实现BeanPostProcessor添加一个注解处理器，在程序启动时扫描上面两个注解，并建立报文类型和处理方法的映射关系
+
 3.在继承 ChannelInboundHandlerAdapter的channelRead方法中通过报文type找到具体的处理方法，然后通过反射调用method
+
 4.为了防止Netty的worker线程被阻塞，对于耗时的IO操作我们单独定义一个线程池处理（比如写数据库或向后端发送请求）
+
 5.最后一步，如何将设备上传的消息发送给后端业务？这里我采用的是Feign，Feign是spring cloud中服务消费端的调用框架,通常与ribbon,hystrix等组合使用，实现了客户端负载均衡和断路器。当然这里不局限使用HTTP也可以用MQ消息队列。
 
 核心代码
 1.心跳和认证处理Handler
-
 @Override
 public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
@@ -64,7 +66,6 @@ public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception 
 ChannelAttribute 用来保存与channel相关联的信息，比如device_id、是否认证通过。比如在channelInactive 方法中我们可以直接得到device_id，并产生相应的离线事件。
 
 2.注解处理类
-
 @Override
 public Object postProcessAfterInitialization(Object bean, String beanName){
 
@@ -89,8 +90,8 @@ public Object postProcessAfterInitialization(Object bean, String beanName){
 }
 
 通过实现BeanPostProcessor类，在程序启动的时候将type和method的关系放到Map中（注解缓存），方便后面反射调用使用。
-3.消息路由Handler
 
+3.消息路由Handler
 @Override
 public void channelRead(ChannelHandlerContext ctx, Object msg){
 
@@ -116,6 +117,7 @@ public void channelRead(ChannelHandlerContext ctx, Object msg){
 }
 
 在我们自定义的Handler中通过报文type找到对应Method,然后通过invoke 调用实现方法。
+
 4.线程池配置
 为什么会使用线程池？因为线程池可以帮助我们解耦后端业务和Netty处理逻辑而且可以TaskExecutor 中的任务积压后不会导致使用Netty Worker线程的Handler被阻塞。线程池自带一个queue在任务量突然增加的时候也可以起到缓冲作用。这里使用的是spring线程池（主要是使用方便），当然也可以使用java提供的其他线程池。
 
