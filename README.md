@@ -1,4 +1,5 @@
-
+微信公众号地址：
+https://mp.weixin.qq.com/s?__biz=MzU3Mjc2NzQ5Nw==&mid=2247483753&idx=1&sn=87513efa5ccbaa1113576cdef3da5ab0&scene=19#wechat_redirect
 
 
 如何优雅的处理Netty TCP私有报文
